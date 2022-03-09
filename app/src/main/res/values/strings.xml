@@ -1,0 +1,16 @@
+<resources>
+    <string name="app_name">ItunesMovie</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="price">$ %1$s</string>
+    <string name="track_name">Track Name</string>
+    <string name="genre">Genre</string>
+    <string name="price_1">Price</string>
+    <string name="content_description">Content Description</string>
+    <string name="description">Description</string>
+    <string name="query_hint">Search</string>
+    <string name="no_data_found">No Data Found</string>
+    <string name="null_data">N/A</string>
+    <string name="no_description">No description available.</string>
+    <string name="hint">Search for Tracks</string>
+</resources>
