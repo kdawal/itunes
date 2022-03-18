@@ -3,18 +3,30 @@ package com.example.itunesmovie.presentation.adapter
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import androidx.recyclerview.widget.DiffUtil
+import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.example.itunesmovie.R
 import com.example.itunesmovie.data.model.Track
 import com.example.itunesmovie.databinding.ListItemBinding
 
-class TrackAdapter: RecyclerView.Adapter <TrackAdapter.MovieViewHolder>() {
- private var trackList = ArrayList<Track>()
+class TrackAdapter: ListAdapter <Track ,TrackAdapter.MovieViewHolder>(Callback) {
+// private var trackList = ArrayList<Track>()
 
- fun setList(tracks: List<Track>){
-  trackList.clear()
-  trackList.addAll(tracks)
+// fun setList(tracks: List<Track>){
+//  trackList.clear()
+//  trackList.addAll(tracks)
+// }
+
+ object Callback: DiffUtil.ItemCallback<Track>() {
+  override fun areItemsTheSame(oldItem: Track, newItem: Track): Boolean {
+   return oldItem.trackId == newItem.trackId
+  }
+
+  override fun areContentsTheSame(oldItem: Track, newItem: Track): Boolean {
+   return oldItem == newItem
+  }
  }
 
  private var onItemClickListener: ((Track) -> Unit)? = null
@@ -26,12 +38,12 @@ class TrackAdapter: RecyclerView.Adapter <TrackAdapter.MovieViewHolder>() {
  }
 
  override fun onBindViewHolder(holder: MovieViewHolder, position: Int) {
-  val movie = trackList[position]
+  val movie = currentList[position]
   holder.bind(movie)
  }
 
  override fun getItemCount(): Int {
-  return trackList.size
+  return currentList.size
  }
 
  inner class MovieViewHolder(

@@ -19,14 +19,20 @@ class FactoryModule {
   getSearchTracksUseCase: GetSearchTracksUseCase,
   saveTrackUseCase: SaveTrackUseCase,
   getSavedTrackUseCase: GetSavedTrackUseCase,
-  deleteSavedTrackUSeCase: DeleteSavedTrackUSeCase
+  deleteSavedTrackUSeCase: DeleteSavedTrackUSeCase,
+  saveUserActivityUseCase: SaveUserActivityUseCase,
+  getUserActivityUseCase: GetUserActivityUseCase,
+  updateUserActivityUseCase: UpdateUserActivityUseCase
  ): TrackViewModelFactory{
   return TrackViewModelFactory(
    geTracksUseCase,
    getSearchTracksUseCase,
    saveTrackUseCase,
    getSavedTrackUseCase,
-   deleteSavedTrackUSeCase
+   deleteSavedTrackUSeCase,
+   saveUserActivityUseCase,
+   getUserActivityUseCase,
+   updateUserActivityUseCase
   )
  }
 }

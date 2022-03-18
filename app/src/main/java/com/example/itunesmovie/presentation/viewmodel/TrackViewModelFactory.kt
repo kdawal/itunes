@@ -9,7 +9,10 @@ class TrackViewModelFactory(
  private val getSearchTracksUseCase: GetSearchTracksUseCase,
  private val saveTrackUseCase: SaveTrackUseCase,
  private val getSavedTrackUseCase: GetSavedTrackUseCase,
- private val deleteSavedTrackUSeCase: DeleteSavedTrackUSeCase
+ private val deleteSavedTrackUSeCase: DeleteSavedTrackUSeCase,
+ private val saveUserActivityUseCase: SaveUserActivityUseCase,
+ private val getUserActivityUseCase: GetUserActivityUseCase,
+ private val updateUserActivityUseCase: UpdateUserActivityUseCase
 ): ViewModelProvider.Factory {
  override fun <T : ViewModel> create(modelClass: Class<T>): T {
   return TrackViewModel(
@@ -17,7 +20,10 @@ class TrackViewModelFactory(
    getSearchTracksUseCase,
    saveTrackUseCase,
    getSavedTrackUseCase,
-   deleteSavedTrackUSeCase
+   deleteSavedTrackUSeCase,
+   saveUserActivityUseCase,
+   getUserActivityUseCase,
+   updateUserActivityUseCase
   ) as T
  }
 }
