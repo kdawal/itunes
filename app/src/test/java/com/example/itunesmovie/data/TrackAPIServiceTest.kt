@@ -1,13 +1,9 @@
 package com.example.itunesmovie.data
 
 import com.example.itunesmovie.data.api.TrackAPIService
-import com.example.itunesmovie.data.model.APIResponse
 import com.google.common.truth.Truth.assertThat
-import io.reactivex.rxjava3.core.Completable
-import io.reactivex.rxjava3.core.Observable
 import okhttp3.mockwebserver.MockResponse
 import okhttp3.mockwebserver.MockWebServer
-import okhttp3.mockwebserver.RecordedRequest
 import okio.buffer
 import okio.source
 import org.junit.Before
@@ -37,10 +33,8 @@ class TrackAPIServiceTest {
  @Test
  fun getTracks_sendRequest_receivedExpected() {
   enqueueMockResponse()
-  val response = service.getTracks()
-  val request = server.takeRequest()
-  assertThat(response).isNull()
-
+  val response = service.getTracks().test()
+  assertThat(response).isNotNull()
  }
 
  private fun enqueueMockResponse(){

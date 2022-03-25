@@ -6,6 +6,10 @@ import androidx.room.Entity
 import androidx.room.PrimaryKey
 import com.google.gson.annotations.SerializedName
 import java.io.Serializable
+/**
+ * Database table track.
+ * Also a model for result data
+ */
 @Entity(
     tableName = "track"
 )

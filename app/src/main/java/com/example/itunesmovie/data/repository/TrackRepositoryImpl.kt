@@ -12,6 +12,10 @@ import io.reactivex.rxjava3.core.Observer
 import io.reactivex.rxjava3.core.Scheduler
 import io.reactivex.rxjava3.schedulers.Schedulers
 
+/**
+ * A repository that serves a pipeline for getting data.
+ * From local or from API data depending on the needs of the use cases
+*/
 class TrackRepositoryImpl(
  private val trackRemoteDataSource: TrackRemoteDataSource,
  private val trackLocalDataSource: TrackLocalDataSource

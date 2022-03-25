@@ -7,7 +7,9 @@ import io.reactivex.rxjava3.core.Flowable
 import io.reactivex.rxjava3.core.Observable
 import io.reactivex.rxjava3.core.Single
 import retrofit2.http.DELETE
-
+/**
+ * Data Access Object where you can write your SQLite query
+ */
 @Dao
 interface TrackDao {
 

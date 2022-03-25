@@ -1,5 +1,17 @@
 package com.example.itunesmovie.data.util
 
+/**
+ * A class that handles the response data
+ * Serves as a flagging during execution of data process
+ *
+ * Success: for success data
+ *
+ * Loading: use for displaying progress bar.
+ *
+ * Error: use for displaying error message.
+ * Let the user know that there is an error
+ *
+ */
 sealed class Resource<T>(
  val data: T? = null,
  val message: String? = null

@@ -11,24 +11,21 @@ import com.example.itunesmovie.R
 import com.example.itunesmovie.data.model.Track
 import com.example.itunesmovie.databinding.ListItemBinding
 
-class TrackAdapter: ListAdapter <Track ,TrackAdapter.MovieViewHolder>(Callback) {
-// private var trackList = ArrayList<Track>()
+/**
+ * Handles data that will be displayed on the recylcerview.
+*/
 
-// fun setList(tracks: List<Track>){
-//  trackList.clear()
-//  trackList.addAll(tracks)
-// }
+class TrackAdapter: RecyclerView.Adapter <TrackAdapter.MovieViewHolder>() {
+ private val trackList = ArrayList<Track>()
 
- object Callback: DiffUtil.ItemCallback<Track>() {
-  override fun areItemsTheSame(oldItem: Track, newItem: Track): Boolean {
-   return oldItem.trackId == newItem.trackId
-  }
-
-  override fun areContentsTheSame(oldItem: Track, newItem: Track): Boolean {
-   return oldItem == newItem
-  }
+ fun setList(tracks: List<Track>){
+  trackList.clear()
+  trackList.addAll(tracks)
  }
 
+ /**
+  * Use for setting onClickListener for each item
+  */
  private var onItemClickListener: ((Track) -> Unit)? = null
 
  override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MovieViewHolder {
@@ -38,18 +35,23 @@ class TrackAdapter: ListAdapter <Track ,TrackAdapter.MovieViewHolder>(Callback) 
  }
 
  override fun onBindViewHolder(holder: MovieViewHolder, position: Int) {
-  val movie = currentList[position]
+  val movie = trackList[position]
   holder.bind(movie)
  }
 
  override fun getItemCount(): Int {
-  return currentList.size
+  return trackList.size
  }
 
  inner class MovieViewHolder(
   private val listItemBinding: ListItemBinding)
   : RecyclerView.ViewHolder(listItemBinding.root){
 
+  /**
+   * Function that gives data to to be displayed in recyclerview
+   *
+   * @param Track data needed for displaying item in recyclerview
+   */
   fun bind(track: Track){
    listItemBinding.apply {
     trackNameTextView.text = track.trackName ?: root.context
@@ -85,6 +87,11 @@ class TrackAdapter: ListAdapter <Track ,TrackAdapter.MovieViewHolder>(Callback) 
   }
  }
 
+ /**
+  * A public function for setting onClickListener for each item
+  *
+  * @param listener with Track as reference data
+  */
  fun setOnItemClickListener(listener: ((Track) -> Unit)){
   onItemClickListener = listener
  }

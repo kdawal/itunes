@@ -5,7 +5,9 @@ import com.example.itunesmovie.data.model.Track
 import com.example.itunesmovie.data.repository.datasource.TrackLocalDataSource
 import io.reactivex.rxjava3.core.Completable
 import io.reactivex.rxjava3.core.Observable
-
+/**
+ * Implements local datasource for interacting with DAO
+*/
 class TrackLocalDataSourceImpl(
  private val trackDao: TrackDao
 ): TrackLocalDataSource {

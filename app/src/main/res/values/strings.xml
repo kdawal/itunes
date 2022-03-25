@@ -13,4 +13,6 @@
     <string name="null_data">N/A</string>
     <string name="no_description">No description available.</string>
     <string name="hint">Search for Tracks</string>
+    <string name="track_poster">Track Poster</string>
+    <string name="favorite_icon">Favorite Icon</string>
 </resources>

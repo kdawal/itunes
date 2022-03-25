@@ -8,6 +8,9 @@ import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
 import javax.inject.Singleton
 
+/**
+ * Dependency injection for ViewModelFactory
+ */
 @Module
 @InstallIn(SingletonComponent::class)
 class FactoryModule {
@@ -19,20 +22,14 @@ class FactoryModule {
   getSearchTracksUseCase: GetSearchTracksUseCase,
   saveTrackUseCase: SaveTrackUseCase,
   getSavedTrackUseCase: GetSavedTrackUseCase,
-  deleteSavedTrackUSeCase: DeleteSavedTrackUSeCase,
-  saveUserActivityUseCase: SaveUserActivityUseCase,
-  getUserActivityUseCase: GetUserActivityUseCase,
-  updateUserActivityUseCase: UpdateUserActivityUseCase
+  deleteSavedTrackUSeCase: DeleteSavedTrackUSeCase
  ): TrackViewModelFactory{
   return TrackViewModelFactory(
    geTracksUseCase,
    getSearchTracksUseCase,
    saveTrackUseCase,
    getSavedTrackUseCase,
-   deleteSavedTrackUSeCase,
-   saveUserActivityUseCase,
-   getUserActivityUseCase,
-   updateUserActivityUseCase
+   deleteSavedTrackUSeCase
   )
  }
 }

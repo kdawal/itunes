@@ -1,7 +1,6 @@
 package com.example.itunesmovie.presentation.di
 
 import com.example.itunesmovie.domain.repository.TrackRepository
-import com.example.itunesmovie.domain.repository.UserActivityRepository
 import com.example.itunesmovie.domain.usecase.*
 import dagger.Module
 import dagger.Provides
@@ -9,6 +8,9 @@ import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
 import javax.inject.Singleton
 
+/**
+ * Dependency injection for use cases
+ */
 @Module
 @InstallIn(SingletonComponent::class)
 class UseCaseModule {
@@ -52,30 +54,5 @@ class UseCaseModule {
  ): DeleteSavedTrackUSeCase {
   return DeleteSavedTrackUSeCase(trackRepository)
  }
-
- @Singleton
- @Provides
- fun providesSaveUserActivityUseCase(
-  userActivityRepository: UserActivityRepository,
- ): SaveUserActivityUseCase {
-  return SaveUserActivityUseCase(userActivityRepository)
- }
-
- @Singleton
- @Provides
- fun providesGetUserActivityUseCase(
-  userActivityRepository: UserActivityRepository
- ): GetUserActivityUseCase{
-  return GetUserActivityUseCase(userActivityRepository)
- }
-
- @Singleton
- @Provides
- fun providesUpdateUserActivityUseCase(
-  userActivityRepository: UserActivityRepository
- ): UpdateUserActivityUseCase{
-  return UpdateUserActivityUseCase(userActivityRepository)
- }
-
 
 }
