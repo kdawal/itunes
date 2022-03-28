@@ -12,97 +12,97 @@ import com.example.itunesmovie.presentation.viewmodel.TrackViewModel
 
 /**
  * Handles data that will be displayed on the RecyclerView.
-*/
+ */
 
 class TrackAdapter(
- private val trackViewModel: TrackViewModel
-): RecyclerView.Adapter <TrackAdapter.MovieViewHolder>() {
- private val trackList = ArrayList<Track>()
+  private val trackViewModel: TrackViewModel,
+) : RecyclerView.Adapter<TrackAdapter.MovieViewHolder>() {
+  private val trackList = ArrayList<Track>()
 
- fun setList(tracks: List<Track>){
-  trackList.clear()
-  trackList.addAll(tracks)
- }
-
- /**
-  * Use for setting onClickListener for each item
-  */
- private var onItemClickListener: ((Track) -> Unit)? = null
-
- override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MovieViewHolder {
-  val listItemBinding = ListItemBinding
-   .inflate(LayoutInflater.from(parent.context), parent, false)
-  return MovieViewHolder(listItemBinding)
- }
-
- override fun onBindViewHolder(holder: MovieViewHolder, position: Int) {
-  val movie = trackList[position]
-  holder.bind(movie)
- }
-
- override fun getItemCount(): Int {
-  return trackList.size
- }
-
- inner class MovieViewHolder(
-  private val listItemBinding: ListItemBinding)
-  : RecyclerView.ViewHolder(listItemBinding.root){
+  fun setList(tracks: List<Track>) {
+    trackList.clear()
+    trackList.addAll(tracks)
+  }
 
   /**
-   * Function that gives data to to be displayed in recyclerview
-   *
-   * @param track data needed for displaying item in recyclerview
+   * Use for setting onClickListener for each item
    */
-  fun bind(track: Track){
-   listItemBinding.apply {
-    trackNameTextView.text = track.trackName ?: root.context
-     .getString(R.string.null_data)
-    genreTextView.text = track.primaryGenreName ?: root.context
-     .getString(R.string.null_data)
-    priceTextView.text = root.context
-     .getString(R.string.price, track.trackPrice
-      ?: R.string.null_data)
+  private var onItemClickListener: ((Track) -> Unit)? = null
 
-    if(track.isFavorite == true){
-    Log.i("favoriteTrack",track.trackName.toString())
-     Glide.with(root)
-      .load(R.drawable.ic_favorite_2)
-      .into(favoriteIcon)
-    }else{
-     Glide.with(root)
-      .load(R.drawable.ic_favorite_1)
-      .into(favoriteIcon)
-   }
-    favoriteIcon.setOnClickListener {
-     if(track.isFavorite == true){
-      Log.i("Clicked","Favorite")
-      trackViewModel.deleteSavedTrack(track)
-     }else{
-      Log.i("Clicked","Not Favorite")
-      trackViewModel.saveTrack(track)
-     }
-    }
-    Glide.with(root)
-     .load(track.artworkUrl100)
-     .placeholder(R.drawable.ic_movie)
-     .into(artworkImageView)
-    root.setOnClickListener {
-
-     onItemClickListener?.let {
-      it(track)
-     }
-    }
-   }
+  override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MovieViewHolder {
+    val listItemBinding = ListItemBinding
+      .inflate(LayoutInflater.from(parent.context), parent, false)
+    return MovieViewHolder(listItemBinding)
   }
- }
 
- /**
-  * A public function for setting onClickListener for each item
-  *
-  * @param listener with Track as reference data
-  */
- fun setOnItemClickListener(listener: ((Track) -> Unit)){
-  onItemClickListener = listener
- }
+  override fun onBindViewHolder(holder: MovieViewHolder, position: Int) {
+    val movie = trackList[position]
+    holder.bind(movie)
+  }
+
+  override fun getItemCount(): Int {
+    return trackList.size
+  }
+
+  inner class MovieViewHolder(
+    private val listItemBinding: ListItemBinding,
+  ) : RecyclerView.ViewHolder(listItemBinding.root) {
+
+    /**
+     * Function that gives data to to be displayed in recyclerview
+     *
+     * @param track data needed for displaying item in recyclerview
+     */
+    fun bind(track: Track) {
+      listItemBinding.apply {
+        trackNameTextView.text = track.trackName ?: root.context
+          .getString(R.string.null_data)
+        genreTextView.text = track.primaryGenreName ?: root.context
+          .getString(R.string.null_data)
+        priceTextView.text = root.context
+          .getString(R.string.price, track.trackPrice
+            ?: R.string.null_data)
+
+        if (track.isFavorite == true) {
+          Log.i("favoriteTrack", track.trackName.toString())
+          Glide.with(root)
+            .load(R.drawable.ic_favorite_2)
+            .into(favoriteIcon)
+        } else {
+          Glide.with(root)
+            .load(R.drawable.ic_favorite_1)
+            .into(favoriteIcon)
+        }
+        favoriteIcon.setOnClickListener {
+          if (track.isFavorite == true) {
+            Log.i("Clicked", "Favorite")
+            trackViewModel.deleteSavedTrack(track)
+          } else {
+            Log.i("Clicked", "Not Favorite")
+            trackViewModel.saveTrack(track)
+          }
+        }
+        Glide.with(root)
+          .load(track.artworkUrl100)
+          .placeholder(R.drawable.ic_movie)
+          .into(artworkImageView)
+        root.setOnClickListener {
+
+          onItemClickListener?.let {
+            it(track)
+          }
+        }
+      }
+    }
+  }
+
+  /**
+   * A public function for setting onClickListener for each item
+   *
+   * @param listener with Track as reference data
+   */
+  fun setOnItemClickListener(listener: ((Track) -> Unit)) {
+    onItemClickListener = listener
+  }
 
 }

@@ -16,9 +16,9 @@ import javax.inject.Singleton
 @InstallIn(SingletonComponent::class)
 class SharedPreferenceModule {
 
- @Singleton
- @Provides
- fun providesSharedPreference(app: Application): SharedPreferences{
-  return app.getSharedPreferences("MyPREFERENCES", Context.MODE_PRIVATE)
- }
+  @Singleton
+  @Provides
+  fun providesSharedPreference(app: Application): SharedPreferences {
+    return app.getSharedPreferences("MyPREFERENCES", Context.MODE_PRIVATE)
+  }
 }

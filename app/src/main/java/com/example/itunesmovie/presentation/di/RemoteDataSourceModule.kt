@@ -16,11 +16,11 @@ import javax.inject.Singleton
 @InstallIn(SingletonComponent::class)
 class RemoteDataSourceModule {
 
- @Singleton
- @Provides
- fun providesTracksRemoteDataSource(
-  trackAPIService: TrackAPIService
- ): TrackRemoteDataSource{
-  return TrackRemoteDataSourceImpl(trackAPIService)
- }
+  @Singleton
+  @Provides
+  fun providesTracksRemoteDataSource(
+   trackAPIService: TrackAPIService,
+  ): TrackRemoteDataSource {
+    return TrackRemoteDataSourceImpl(trackAPIService)
+  }
 }

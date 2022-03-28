@@ -6,8 +6,8 @@ import io.reactivex.rxjava3.core.Observer
 
 /**
  * Datasource for interacting with Retrofit API calls
-*/
+ */
 interface TrackRemoteDataSource {
- fun getTracks(): Observable<APIResponse>
- fun searchTracks(term: String): Observable<APIResponse>
+  fun getTracks(): Observable<APIResponse>
+  fun searchTracks(term: String): Observable<APIResponse>
 }

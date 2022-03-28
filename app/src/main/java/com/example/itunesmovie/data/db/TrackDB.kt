@@ -9,9 +9,9 @@ import com.example.itunesmovie.data.model.Track
  * Use for storing favorite Tracks
  */
 @Database(
- entities = [Track::class],
- version = 1,
- exportSchema = false)
-abstract class TrackDB: RoomDatabase() {
-abstract fun getTrackDao(): TrackDao
+  entities = [Track::class],
+  version = 1,
+  exportSchema = false)
+abstract class TrackDB : RoomDatabase() {
+  abstract fun getTrackDao(): TrackDao
 }

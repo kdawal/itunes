@@ -16,10 +16,10 @@ import javax.inject.Singleton
 @InstallIn(SingletonComponent::class)
 class LocalDataSource {
 
- @Singleton
- @Provides
- fun providesTrackLocalDataSource(trackDao: TrackDao): TrackLocalDataSource{
-  return TrackLocalDataSourceImpl(trackDao)
- }
+  @Singleton
+  @Provides
+  fun providesTrackLocalDataSource(trackDao: TrackDao): TrackLocalDataSource {
+    return TrackLocalDataSourceImpl(trackDao)
+  }
 
 }

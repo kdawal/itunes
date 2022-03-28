@@ -6,12 +6,13 @@ import androidx.room.Entity
 import androidx.room.PrimaryKey
 import com.google.gson.annotations.SerializedName
 import java.io.Serializable
+
 /**
  * Database table track.
  * Also a model for result data
  */
 @Entity(
-    tableName = "track"
+  tableName = "track"
 )
 data class Track(
     @SerializedName("artworkUrl100")
@@ -33,5 +34,5 @@ data class Track(
     val trackName: String?,
     @SerializedName("trackPrice")
     val trackPrice: Double?,
-    var isFavorite: Boolean?
-): Serializable
+    var isFavorite: Boolean?,
+) : Serializable

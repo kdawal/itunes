@@ -5,5 +5,5 @@ import android.util.Log
 import dagger.hilt.android.HiltAndroidApp
 
 @HiltAndroidApp
-class TrackApp : Application(){
+class TrackApp : Application() {
 }

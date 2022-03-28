@@ -17,14 +17,14 @@ import javax.inject.Singleton
 @InstallIn(SingletonComponent::class)
 class RepositoryModule {
 
- @Singleton
- @Provides
- fun providesTrackRepository(
-  trackRemoteDataSource: TrackRemoteDataSource,
-  trackLocalDataSource: TrackLocalDataSource
- ): TrackRepository{
-  return TrackRepositoryImpl(trackRemoteDataSource, trackLocalDataSource)
- }
+  @Singleton
+  @Provides
+  fun providesTrackRepository(
+   trackRemoteDataSource: TrackRemoteDataSource,
+   trackLocalDataSource: TrackLocalDataSource,
+  ): TrackRepository {
+    return TrackRepositoryImpl(trackRemoteDataSource, trackLocalDataSource)
+  }
 
 
 }

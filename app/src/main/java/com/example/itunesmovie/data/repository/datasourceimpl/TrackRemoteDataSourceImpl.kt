@@ -7,17 +7,18 @@ import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
 import io.reactivex.rxjava3.core.Observable
 import io.reactivex.rxjava3.core.Observer
 import io.reactivex.rxjava3.schedulers.Schedulers
+
 /**
  * Implements remote datasource for interacting with retrofit api calls
  */
 class TrackRemoteDataSourceImpl(
- private val trackAPIService: TrackAPIService
-): TrackRemoteDataSource {
- override fun getTracks(): Observable<APIResponse> {
-  return trackAPIService.getTracks()
- }
+ private val trackAPIService: TrackAPIService,
+) : TrackRemoteDataSource {
+  override fun getTracks(): Observable<APIResponse> {
+    return trackAPIService.getTracks()
+  }
 
- override fun searchTracks(term: String): Observable<APIResponse> {
-  return trackAPIService.getTracks(term)
- }
+  override fun searchTracks(term: String): Observable<APIResponse> {
+    return trackAPIService.getTracks(term)
+  }
 }

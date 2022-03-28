@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.util.Log
 import android.view.*
 import androidx.core.content.ContextCompat
+import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.navArgs
 import com.bumptech.glide.Glide
 import com.example.itunesmovie.R
@@ -17,12 +18,11 @@ import com.google.android.material.snackbar.Snackbar
 class InfoFragment : BaseFragment<FragmentInfoBinding>(
  FragmentInfoBinding::inflate
 ) {
- private lateinit var trackViewModel: TrackViewModel
  private lateinit var track: Track
+ private val trackViewModel by activityViewModels<TrackViewModel>()
 
  override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
   super.onViewCreated(view, savedInstanceState)
-  trackViewModel = (activity as MainActivity).trackViewModel
   val args: InfoFragmentArgs by navArgs()
   track = args.selectedTrack
   setupViews(track)

@@ -21,31 +21,31 @@ import javax.inject.Singleton
 @InstallIn(SingletonComponent::class)
 class NetModule {
 
- @Singleton
- @Provides
- fun providesRetrofit(): Retrofit{
-  val interceptor = HttpLoggingInterceptor().apply {
-   level = HttpLoggingInterceptor.Level.BODY
+  @Singleton
+  @Provides
+  fun providesRetrofit(): Retrofit {
+    val interceptor = HttpLoggingInterceptor().apply {
+      level = HttpLoggingInterceptor.Level.BODY
+    }
+    val client = OkHttpClient.Builder().apply {
+      addInterceptor(interceptor)
+      connectTimeout(30, TimeUnit.SECONDS)
+      readTimeout(20, TimeUnit.SECONDS)
+      writeTimeout(25, TimeUnit.SECONDS)
+    }.build()
+
+    return Retrofit.Builder()
+      .addConverterFactory(GsonConverterFactory.create())
+      .baseUrl(BuildConfig.BASE_URL)
+      .client(client)
+      .addCallAdapterFactory(RxJava3CallAdapterFactory.create())
+      .build()
+
   }
-  val client = OkHttpClient.Builder().apply {
-   addInterceptor(interceptor)
-   connectTimeout(30, TimeUnit.SECONDS)
-   readTimeout(20, TimeUnit.SECONDS)
-   writeTimeout(25, TimeUnit.SECONDS)
-  }.build()
 
-  return Retrofit.Builder()
-   .addConverterFactory(GsonConverterFactory.create())
-   .baseUrl(BuildConfig.BASE_URL)
-   .client(client)
-   .addCallAdapterFactory(RxJava3CallAdapterFactory.create())
-   .build()
-
- }
-
- @Singleton
- @Provides
- fun providesTracksAPIService(retrofit: Retrofit):TrackAPIService{
- return retrofit.create(TrackAPIService::class.java)
- }
+  @Singleton
+  @Provides
+  fun providesTracksAPIService(retrofit: Retrofit): TrackAPIService {
+    return retrofit.create(TrackAPIService::class.java)
+  }
 }

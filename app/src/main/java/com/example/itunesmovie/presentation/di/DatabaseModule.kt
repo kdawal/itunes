@@ -17,20 +17,20 @@ import javax.inject.Singleton
 @InstallIn(SingletonComponent::class)
 class DatabaseModule {
 
- @Singleton
- @Provides
- fun providesTrackDatabase(app: Application): TrackDB{
-  return Room.databaseBuilder(
-   app,
-   TrackDB::class.java,
-  "track_db")
-   .fallbackToDestructiveMigration()
-   .build()
- }
+  @Singleton
+  @Provides
+  fun providesTrackDatabase(app: Application): TrackDB {
+    return Room.databaseBuilder(
+      app,
+      TrackDB::class.java,
+      "track_db")
+      .fallbackToDestructiveMigration()
+      .build()
+  }
 
- @Singleton
- @Provides
- fun getTrackDao(trackDB: TrackDB): TrackDao{
-  return trackDB.getTrackDao()
- }
+  @Singleton
+  @Provides
+  fun getTrackDao(trackDB: TrackDB): TrackDao {
+    return trackDB.getTrackDao()
+  }
 }

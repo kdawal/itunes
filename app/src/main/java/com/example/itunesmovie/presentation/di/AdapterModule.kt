@@ -14,9 +14,9 @@ import javax.inject.Singleton
 @InstallIn(SingletonComponent::class)
 class AdapterModule {
 
- @Singleton
- @Provides
- fun providesHeaderAdapter(): HeaderAdapter{
-  return HeaderAdapter()
- }
+  @Singleton
+  @Provides
+  fun providesHeaderAdapter(): HeaderAdapter {
+    return HeaderAdapter()
+  }
 }

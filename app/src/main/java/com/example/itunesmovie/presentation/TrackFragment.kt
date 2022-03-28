@@ -7,6 +7,7 @@ import android.util.Log
 import android.view.*
 import android.widget.SearchView
 import android.widget.Toast
+import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.ConcatAdapter
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -27,15 +28,16 @@ import java.util.concurrent.TimeUnit
 class TrackFragment : BaseFragment<FragmentTrackBinding>(
  FragmentTrackBinding::inflate
 ) {
- private lateinit var trackViewModel: TrackViewModel
  private lateinit var trackAdapter: TrackAdapter
  private lateinit var headerAdapter: HeaderAdapter
  private lateinit var sharedPreferences: SharedPreferences
+
+ private val trackViewModel by activityViewModels<TrackViewModel>()
  private var searchTerm: String = ""
+
 
  override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
   super.onViewCreated(view, savedInstanceState)
-  trackViewModel = (activity as MainActivity).trackViewModel
   trackAdapter = (activity as MainActivity).trackAdapter
   headerAdapter = (activity as MainActivity).headerAdapter
   sharedPreferences = (activity as MainActivity).sharedPreferences
