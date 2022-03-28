@@ -59,6 +59,7 @@ Here's Why:
 
 <p align="right">(<a href="#top">back to top</a>)</p>
 <!-- GETTING STARTED -->
+
 ## Getting Started
 First, we need to test our URL's if those endpoints are actually working. 
 
