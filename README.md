@@ -56,6 +56,7 @@ Here's Why:
 * [OkHttp](https://square.github.io/okhttp/)
 * [Glide](https://github.com/bumptech/glide)
 * [Hilt](https://developer.android.com/training/dependency-injection/hilt-android)
+* [Truth](https://truth.dev/)
 
 <p align="right">(<a href="#top">back to top</a>)</p>
 <!-- GETTING STARTED -->
