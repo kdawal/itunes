@@ -1,10 +1,9 @@
 package com.example.itunesmovie.presentation
 
-import android.content.SharedPreferences
 import android.os.Bundle
 import android.util.Log
 import android.view.*
-import androidx.navigation.fragment.findNavController
+import androidx.core.content.ContextCompat
 import androidx.navigation.fragment.navArgs
 import com.bumptech.glide.Glide
 import com.example.itunesmovie.R
@@ -14,15 +13,12 @@ import com.example.itunesmovie.databinding.FragmentInfoBinding
 import com.example.itunesmovie.presentation.base.BaseFragment
 import com.example.itunesmovie.presentation.viewmodel.TrackViewModel
 import com.google.android.material.snackbar.Snackbar
-import java.text.DateFormat
-import java.util.*
 
 class InfoFragment : BaseFragment<FragmentInfoBinding>(
  FragmentInfoBinding::inflate
 ) {
  private lateinit var trackViewModel: TrackViewModel
  private lateinit var track: Track
- private lateinit var sharedPreferences: SharedPreferences
 
  override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
   super.onViewCreated(view, savedInstanceState)
@@ -31,8 +27,8 @@ class InfoFragment : BaseFragment<FragmentInfoBinding>(
   track = args.selectedTrack
   setupViews(track)
   setUpFloatingActionButton(track, view)
+  trackViewModel.trackId = track.trackId
   trackViewModel.isNavigatedToInfo = true
-  sharedPreferences = (activity as MainActivity).sharedPreferences
  }
 
  /**
@@ -63,15 +59,12 @@ class InfoFragment : BaseFragment<FragmentInfoBinding>(
   */
  private fun setUpFloatingActionButton(track: Track, view: View) {
 
-  binding?.saveFloatingActionButton?.apply {
-
+  binding?.saveButton?.apply {
    if (track.isFavorite == true) {
-    setImageResource(R.drawable.ic_favorite_2)
+    setButtonToRemove()
    }
    setOnClickListener {
     if (track.isFavorite == true) {
-     Log.i("FavoriteTrack", track.trackName.toString())
-
      /**
       * Execute delete selected track
       *
@@ -81,14 +74,15 @@ class InfoFragment : BaseFragment<FragmentInfoBinding>(
       .observe(viewLifecycleOwner) { response ->
        when (response) {
         is Resource.Success -> {
-         Snackbar.make(view, "Deleted Successfully", Snackbar.LENGTH_LONG)
+         Snackbar.make(view, "Removed Successfully", Snackbar.LENGTH_LONG)
           .apply {
            setAction("Undo") {
             trackViewModel.saveTrack(track)
-            setImageResource(R.drawable.ic_favorite_2)
+            setButtonToRemove()
+
            }
           }.show()
-         setImageResource(R.drawable.ic_favorite_1)
+         setButtonToAdd()
          hideProgressBar()
         }
         is Resource.Error -> {
@@ -110,7 +104,7 @@ class InfoFragment : BaseFragment<FragmentInfoBinding>(
        when (response) {
         is Resource.Success -> {
          Snackbar.make(view, "Saved Successfully", Snackbar.LENGTH_LONG).show()
-         setImageResource(R.drawable.ic_favorite_2)
+         setButtonToRemove()
         }
         is Resource.Error -> {
          hideProgressBar()
@@ -136,27 +130,24 @@ class InfoFragment : BaseFragment<FragmentInfoBinding>(
  }
 
  /**
-  * Saved last screen when the app stop
+  * Set button properties if selected track is
+  * marked as favorite or not
   */
- override fun onStop() {
-  super.onStop()
-  val currentTime = Calendar.getInstance().time
-  val formattedDate = DateFormat.getDateInstance(DateFormat.FULL).format(currentTime)
-
-  val editor = sharedPreferences.edit()
-  val fragment = findNavController().currentDestination?.id
-  val trackId = track.trackId ?: 0
-  editor.putInt("fragment", fragment!!)
-  editor.putInt("trackId", trackId)
-  editor.putString("date", formattedDate)
-  editor.apply()
-
+ private fun setButtonToAdd(){
+  binding?.saveButton?.apply {
+   setBackgroundColor(ContextCompat.getColor(context, R.color.white))
+   text = context.getString(R.string.Add)
+   setTextColor(ContextCompat.getColor(context, R.color.pink))
+  }
  }
 
- override fun onDestroyView() {
-  super.onDestroyView()
-  Log.i("OnDestroyView", "Destroying View")
-
+ private fun setButtonToRemove(){
+  binding?.saveButton?.apply {
+   setBackgroundColor(ContextCompat.getColor(context, R.color.pink))
+   text = context.getString(R.string.Remove)
+   setTextColor(ContextCompat.getColor(context, R.color.white))
+  }
  }
+
 
 }

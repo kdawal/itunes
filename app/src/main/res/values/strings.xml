@@ -15,4 +15,8 @@
     <string name="hint">Search for Tracks</string>
     <string name="track_poster">Track Poster</string>
     <string name="favorite_icon">Favorite Icon</string>
+    <string name="no_result_found">No Result Found</string>
+    <string name="add_to_favorite">Add to favorite</string>
+    <string name="Add">Add to favorite</string>
+    <string name="Remove">Remove to favorite</string>
 </resources>

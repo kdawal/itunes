@@ -16,7 +16,7 @@
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             android:orientation="vertical">
 
             <!-- Media -->
@@ -62,21 +62,27 @@
                     android:textAppearance="?attr/textAppearanceBody2"
                     android:textColor="?android:attr/textColorSecondary" />
 
+
+
             </LinearLayout>
 
+
         </LinearLayout>
-
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/saveButton"
+            style="@style/Widget.Material3.Button.OutlinedButton"
+            app:strokeColor="@color/white_gray"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom"
+            android:fontFamily="sans-serif-medium"
+            android:text="@string/add_to_favorite"
+            android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+            android:textColor="@color/pink"
+            app:backgroundTint="@color/white"
+            app:rippleColor="@color/pink"
+            android:layout_marginBottom="8dp"/>
     </com.google.android.material.card.MaterialCardView>
-
-    <com.google.android.material.floatingactionbutton.FloatingActionButton
-        android:id="@+id/saveFloatingActionButton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginEnd="16dp"
-        android:layout_marginBottom="16dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        android:contentDescription="@string/favorite_icon"/>
     <ProgressBar
         android:id="@+id/progressBar"
         style="?android:attr/progressBarStyle"

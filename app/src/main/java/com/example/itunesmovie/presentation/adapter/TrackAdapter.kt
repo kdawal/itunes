@@ -3,19 +3,20 @@ package com.example.itunesmovie.presentation.adapter
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
-import androidx.recyclerview.widget.DiffUtil
-import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.example.itunesmovie.R
 import com.example.itunesmovie.data.model.Track
 import com.example.itunesmovie.databinding.ListItemBinding
+import com.example.itunesmovie.presentation.viewmodel.TrackViewModel
 
 /**
- * Handles data that will be displayed on the recylcerview.
+ * Handles data that will be displayed on the RecyclerView.
 */
 
-class TrackAdapter: RecyclerView.Adapter <TrackAdapter.MovieViewHolder>() {
+class TrackAdapter(
+ private val trackViewModel: TrackViewModel
+): RecyclerView.Adapter <TrackAdapter.MovieViewHolder>() {
  private val trackList = ArrayList<Track>()
 
  fun setList(tracks: List<Track>){
@@ -50,7 +51,7 @@ class TrackAdapter: RecyclerView.Adapter <TrackAdapter.MovieViewHolder>() {
   /**
    * Function that gives data to to be displayed in recyclerview
    *
-   * @param Track data needed for displaying item in recyclerview
+   * @param track data needed for displaying item in recyclerview
    */
   fun bind(track: Track){
    listItemBinding.apply {
@@ -72,7 +73,15 @@ class TrackAdapter: RecyclerView.Adapter <TrackAdapter.MovieViewHolder>() {
       .load(R.drawable.ic_favorite_1)
       .into(favoriteIcon)
    }
-
+    favoriteIcon.setOnClickListener {
+     if(track.isFavorite == true){
+      Log.i("Clicked","Favorite")
+      trackViewModel.deleteSavedTrack(track)
+     }else{
+      Log.i("Clicked","Not Favorite")
+      trackViewModel.saveTrack(track)
+     }
+    }
     Glide.with(root)
      .load(track.artworkUrl100)
      .placeholder(R.drawable.ic_movie)

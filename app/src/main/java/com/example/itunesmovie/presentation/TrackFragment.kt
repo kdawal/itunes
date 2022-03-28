@@ -31,6 +31,7 @@ class TrackFragment : BaseFragment<FragmentTrackBinding>(
  private lateinit var trackAdapter: TrackAdapter
  private lateinit var headerAdapter: HeaderAdapter
  private lateinit var sharedPreferences: SharedPreferences
+ private var searchTerm: String = ""
 
  override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
   super.onViewCreated(view, savedInstanceState)
@@ -38,8 +39,7 @@ class TrackFragment : BaseFragment<FragmentTrackBinding>(
   trackAdapter = (activity as MainActivity).trackAdapter
   headerAdapter = (activity as MainActivity).headerAdapter
   sharedPreferences = (activity as MainActivity).sharedPreferences
-  Log.i("OnCreateList", "Creating....")
-  checkLastScreen()
+
   /**
    * Pass selected track as bundle to the next fragment
    */
@@ -52,105 +52,50 @@ class TrackFragment : BaseFragment<FragmentTrackBinding>(
     bundle
    )
   }
+  initRecyclerView()
+  viewTrackList()
+  setupSearchView()
  }
-
- private fun checkLastScreen() {
-
-  val trackId = sharedPreferences.getInt("trackId", 0)
-  val date = sharedPreferences.getString("date",null)
-  Log.i("TrackFragmentCheck",trackId.toString())
-  val fragment = sharedPreferences.getInt("fragment", 0)
-  if (trackId != 0) {
-   Log.i("ViewTrackList","Inn")
-   trackViewModel.getTracks(isNetworkConnected)
-    .observe(viewLifecycleOwner) { trackResult ->
-    when (trackResult) {
-     is Resource.Success -> {
-      if (trackResult.data != null) {
-       val track = trackResult.data.find { track -> track.trackId == trackId }
-       val bundle = Bundle().apply {
-        putSerializable(
-         "selected_track",
-         track
-        )
-       }
-       findNavController().navigate(
-        fragment,
-        bundle
-       )
-      }
-     }
-     is Resource.Error -> {
-      Toast.makeText(view?.context, "Something went wrong!", Toast.LENGTH_LONG).show()
-      displayNoDataFound()
-     }
-     is Resource.Loading -> {
-      Log.i("LoadingTrackList","Loading....")
-      displayProgressBar()
-     }
-    }
-   }
-  }else{
-   initRecyclerView(date)
-   trackViewModel.isFirstTime.let {
-    Log.i("FirstTime",it.toString())
-    if(it) {
-     viewTrackList()
-     trackViewModel.isFirstTime = false
-    }
-   }
-   viewTrackList()
-   setupSearchView()
-
-  }
- }
-
 
 
  /**
   * Initialized RecyclerView
   */
- private fun initRecyclerView(date: String?) {
-  val linearLayoutManager = object : LinearLayoutManager(activity) {
-   override fun supportsPredictiveItemAnimations(): Boolean {
-    return false
-   }
-  }
-  if(date != null){
-   val concatAdapter = ConcatAdapter(headerAdapter, trackAdapter)
-   binding?.trackRecyclerView?.apply {
-    adapter = concatAdapter
-    layoutManager = linearLayoutManager
-   }
-  }else{
-   binding?.trackRecyclerView?.apply {
-    adapter = trackAdapter
-    layoutManager = linearLayoutManager
-   }
+ @SuppressLint("NotifyDataSetChanged")
+ private fun initRecyclerView() {
+  binding?.trackRecyclerView?.apply {
+   adapter = ConcatAdapter(headerAdapter, trackAdapter)
+   layoutManager = LinearLayoutManager(activity)
   }
  }
+
  /**
   * Load data
   */
  @SuppressLint("NotifyDataSetChanged")
  private fun viewTrackList() {
-  trackViewModel.getTracks(isNetworkConnected)
-   .observe(viewLifecycleOwner){ result ->
-    when(result){
-     is Resource.Success ->{
-      hideProgressBar()
-      if(result.data.isNullOrEmpty()){
+  trackViewModel.getTracks()
+   .observe(viewLifecycleOwner) { result ->
+    when (result) {
+     is Resource.Success -> {
+      if (result.data.isNullOrEmpty()) {
        displayNoDataFound()
-      }else{
+      } else {
        hideNoDataFound()
-       trackAdapter.setList(result.data)
-       trackAdapter.notifyDataSetChanged()
+       if (!trackViewModel.isSearchStarted) {
+        Log.i("DataReflected", "List")
+        trackAdapter.setList(result.data)
+        trackAdapter.notifyDataSetChanged()
+       }
+
       }
+      hideProgressBar()
      }
-     is Resource.Loading ->{
+     is Resource.Loading -> {
+      Log.i("DataReflected", "List Loading")
       displayProgressBar()
      }
-     is Resource.Error ->{
+     is Resource.Error -> {
       hideProgressBar()
       Toast.makeText(context, result.message, Toast.LENGTH_LONG).show()
      }
@@ -189,32 +134,55 @@ class TrackFragment : BaseFragment<FragmentTrackBinding>(
    .distinctUntilChanged()
    .observeOn(AndroidSchedulers.mainThread())
    .subscribe({ term ->
-    trackViewModel.getSearchTracks(isNetworkConnected, term)
-     .observe(viewLifecycleOwner){ result ->
-      when(result){
-       is Resource.Success -> {
-        hideProgressBar()
-        if( result.data.isNullOrEmpty()){
-         displayNoDataFound()
-        }else{
-         hideNoDataFound()
-         trackAdapter.setList(result.data)
-         trackAdapter.notifyDataSetChanged()
+    trackViewModel.isSearchStarted = true
+    /**
+     * Since when this fragments re-creates when the app navigates to the InfoFragment
+     * it will trigger this search function.
+     *
+     * We need to know if search query changes,
+     * If it change execute search and then dispose previous observable,
+     * IF not, observed the same observable.
+     *
+     * Any action like save (add to favorite) or delete (remove to favorite) will be observed.
+     */
+    if (searchTerm != term || trackViewModel.isNavigatedToInfo) {
+     trackViewModel.disposePreviousSearch()
+     trackViewModel.getSearchTracks(term)
+      .observe(viewLifecycleOwner) { result ->
+       when (result) {
+        is Resource.Success -> {
+         if (result.data.isNullOrEmpty()) {
+          displayNoDataFound()
+         } else {
+          hideNoDataFound()
+          Log.i("DataReflected", "Search Result")
+          trackAdapter.setList(result.data)
+          trackAdapter.notifyDataSetChanged()
+         }
+         hideProgressBar()
+        }
+        is Resource.Loading -> {
+         Log.i("DataReflected", "Search Loading")
+         displayProgressBar()
+        }
+        is Resource.Error -> {
+         hideProgressBar()
+         Toast.makeText(context, result.message, Toast.LENGTH_LONG).show()
         }
        }
-       is Resource.Loading ->{
-        displayProgressBar()
-       }
-       is Resource.Error ->{
-        hideProgressBar()
-        Toast.makeText(context, result.message, Toast.LENGTH_LONG).show()
-       }
       }
+     if (!trackViewModel.isNavigatedToInfo) {
+      binding?.trackRecyclerView?.smoothScrollToPosition(0)
      }
-   }, {
-    Log.e("SearchViewError", it.message.toString())
-   }
+    }
+    trackViewModel.isNavigatedToInfo = false
+    searchTerm = term
+   },
+    {
+     Log.e("SearchViewError", it.message.toString())
+    }
    )
+
  }
 
  override fun displayProgressBar() {
@@ -226,12 +194,12 @@ class TrackFragment : BaseFragment<FragmentTrackBinding>(
  }
 
  private fun displayNoDataFound() {
-  binding?.dataResultTextView?.visibility = View.VISIBLE
+  binding?.noResultImageView?.visibility = View.VISIBLE
   binding?.trackRecyclerView?.visibility = View.GONE
  }
 
  private fun hideNoDataFound() {
-  binding?.dataResultTextView?.visibility = View.GONE
+  binding?.noResultImageView?.visibility = View.GONE
   binding?.trackRecyclerView?.visibility = View.VISIBLE
  }
 
@@ -243,7 +211,7 @@ class TrackFragment : BaseFragment<FragmentTrackBinding>(
   val editor = (activity as MainActivity).sharedPreferences.edit()
   editor.remove("fragment")
   editor.remove("trackId")
-  editor.putString("date",formattedDate)
+  editor.putString("date", formattedDate)
   editor.apply()
 
  }
