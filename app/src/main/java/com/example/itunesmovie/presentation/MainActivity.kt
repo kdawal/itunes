@@ -6,7 +6,7 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
 import android.widget.Toast
-import androidx.lifecycle.ViewModelProvider
+import androidx.activity.viewModels
 import androidx.navigation.fragment.NavHostFragment
 import com.example.itunesmovie.R
 import com.example.itunesmovie.data.util.Resource
@@ -14,7 +14,6 @@ import com.example.itunesmovie.databinding.ActivityMainBinding
 import com.example.itunesmovie.presentation.adapter.HeaderAdapter
 import com.example.itunesmovie.presentation.adapter.TrackAdapter
 import com.example.itunesmovie.presentation.viewmodel.TrackViewModel
-import com.example.itunesmovie.presentation.viewmodel.TrackViewModelFactory
 import dagger.hilt.android.AndroidEntryPoint
 import java.text.DateFormat
 import java.util.*
@@ -27,13 +26,11 @@ import javax.inject.Inject
  */
 @AndroidEntryPoint
 class MainActivity : AppCompatActivity() {
- @Inject
- lateinit var trackViewModelFactory: TrackViewModelFactory
+ val trackViewModel by viewModels<TrackViewModel>()
  @Inject
  lateinit var headerAdapter: HeaderAdapter
  @Inject
  lateinit var sharedPreferences: SharedPreferences
- lateinit var trackViewModel: TrackViewModel
  lateinit var trackAdapter: TrackAdapter
  private lateinit var mainActivityBinding: ActivityMainBinding
  private val navHostFragment by lazy {
@@ -43,7 +40,6 @@ class MainActivity : AppCompatActivity() {
 
  override fun onCreate(savedInstanceState: Bundle?) {
   super.onCreate(savedInstanceState)
-  trackViewModel = ViewModelProvider(this, trackViewModelFactory)[TrackViewModel::class.java]
   trackAdapter = TrackAdapter(trackViewModel)
   mainActivityBinding = ActivityMainBinding.inflate(layoutInflater)
   setContentView(mainActivityBinding.root)

@@ -7,11 +7,13 @@ import androidx.lifecycle.ViewModel
 import com.example.itunesmovie.data.model.Track
 import com.example.itunesmovie.data.util.Resource
 import com.example.itunesmovie.domain.usecase.*
+import dagger.hilt.android.lifecycle.HiltViewModel
 import io.reactivex.rxjava3.core.Observable
 import io.reactivex.rxjava3.core.Observer
 import io.reactivex.rxjava3.disposables.CompositeDisposable
 import io.reactivex.rxjava3.disposables.Disposable
 import io.reactivex.rxjava3.functions.BiFunction
+import javax.inject.Inject
 
 /**
  * A ViewModel class that will handles data needed
@@ -22,7 +24,8 @@ import io.reactivex.rxjava3.functions.BiFunction
  * @param getSavedTrackUseCase use to get list of Tracks that was stored locally
  * @param deleteSavedTrackUSeCaseUseCase use to delete specific track that was save locally
  */
-class TrackViewModel(
+@HiltViewModel
+class TrackViewModel @Inject constructor(
  private val getTracksUseCase: GeTracksUseCase,
  private val getSearchTracksUseCase: GetSearchTracksUseCase,
  private val saveTrackUseCase: SaveTrackUseCase,
